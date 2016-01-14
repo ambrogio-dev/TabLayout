@@ -13,7 +13,7 @@ import com.ambrogio.android.tablayout.TabLayoutManager;
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapter extends FragmentPagerAdapter implements TabLayoutManager.IconPagerAdapter {
+public class SectionsPagerAdapter extends FragmentPagerAdapter implements TabLayoutManager.TabIconPagerAdapter {
 
     public SectionsPagerAdapter(FragmentManager fm, Context c) {
         super(fm);
@@ -50,9 +50,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements TabLay
 
 
     @Override
-    public int getPageTitleIconResForTabPosition(int position) {
+    public int getPageTitleIconDrawableRes(int position) {
 
-        //not needed if getPageTitleIconDrawableForTabPosition is implemented
+        //not needed if getPageTitleIconDrawable is implemented
 
             /*
             //i.e. API >= 23
@@ -71,7 +71,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements TabLay
 
 
     @Override
-    public Drawable getPageTitleIconDrawableForTabPosition(int position) {
+    public Drawable getPageTitleIconDrawable(int position) {
 
         switch (position) {
             case 0:

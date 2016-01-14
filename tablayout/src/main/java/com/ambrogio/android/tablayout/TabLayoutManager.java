@@ -19,10 +19,10 @@ import android.support.v4.view.ViewPager;
  */
 public class TabLayoutManager {
 
-    public interface IconPagerAdapter {
+    public interface TabIconPagerAdapter {
 
         /**
-         * Define a Drawable for a tab icon.
+         * Define a Drawable for a tab icon at a given position.
          * Use a StateListDrawable for pre-lollipop devices (tinting bug in SDK &lt;= 24).
          *
          * @see <a href="http://stackoverflow.com/questions/30828951/tab-with-icon-using-tablayout-in-android-design-library">stackoverflow 1</a>
@@ -32,11 +32,11 @@ public class TabLayoutManager {
          * @return Tab Icon Drawable
          */
         @Nullable
-        Drawable getPageTitleIconDrawableForTabPosition(int position);
+        Drawable getPageTitleIconDrawable(int position);
 
 
         /**
-         * Define a DrawableRes for a tab icon.
+         * Define a DrawableRes for a tab icon at a given position.
          * Use a StateListDrawable for pre-lollipop devices (tinting bug in SDK &lt;= 24).
          *
          * @see <a href="http://stackoverflow.com/questions/30828951/tab-with-icon-using-tablayout-in-android-design-library">stackoverflow 1</a>
@@ -46,7 +46,7 @@ public class TabLayoutManager {
          * @return Tab Icon Drawable Id
          */
         @DrawableRes
-        int getPageTitleIconResForTabPosition(int position);
+        int getPageTitleIconDrawableRes(int position);
 
     }
 
@@ -65,7 +65,7 @@ public class TabLayoutManager {
 
     private static void setTabsFromPagerAdapter(TabLayout tabLayout, PagerAdapter pagerAdapter) {
 
-        if (!(pagerAdapter instanceof IconPagerAdapter)) {
+        if (!(pagerAdapter instanceof TabIconPagerAdapter)) {
             tabLayout.setTabsFromPagerAdapter(pagerAdapter);
             return;
         }
@@ -74,14 +74,14 @@ public class TabLayoutManager {
 
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
 
-            Drawable icon = ((IconPagerAdapter) pagerAdapter).getPageTitleIconDrawableForTabPosition(i);
+            Drawable icon = ((TabIconPagerAdapter) pagerAdapter).getPageTitleIconDrawable(i);
 
             if (!(icon instanceof StateListDrawable) && ( version < Build.VERSION_CODES.M)){
                 throw new AssertionError("Use a StateListDrawable for SDK < 23");
             }
 
             if (icon == null) {
-                final int iconRes = ((IconPagerAdapter) pagerAdapter).getPageTitleIconResForTabPosition(i);
+                final int iconRes = ((TabIconPagerAdapter) pagerAdapter).getPageTitleIconDrawableRes(i);
                 icon = ResourcesCompat.getDrawable(tabLayout.getResources(), iconRes, null);
             }
 
