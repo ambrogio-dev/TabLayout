@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
@@ -9,8 +11,6 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
     }
     buildTypes {
         release {
@@ -40,13 +40,15 @@ ext {
     artifact = 'tablayout'
 
     libraryDescription = 'An Android μlibrary for creating an app bar with icons using TabLayout.'
-    libraryVersion = '0.2.0'
+    libraryVersion = '0.2.1'
 
     developerId = 'ambrogio'
     developerName = 'ambrogio'
     developerEmail = 'app@ambrogio.com'
 }
 
+group = publishedGroupId  // Maven Group ID for the artifact
+version = libraryVersion
 
 install {
     repositories.mavenInstaller {
@@ -79,9 +81,23 @@ install {
     }
 }
 
+task('increaseVersionCode') << {
+    def manifestFile = file("src/main/AndroidManifest.xml")
+    def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
+    def manifestText = manifestFile.getText()
+    def matcher = pattern.matcher(manifestText)
+    matcher.find()
+    def versionCode = Integer.parseInt(matcher.group(1))
+    println "increasing version code to: " + versionCode
+    def manifestContent = matcher.replaceAll("versionCode=\"" + ++versionCode + "\"")
+    manifestFile.write(manifestContent)
+}
 
-group = publishedGroupId  // Maven Group ID for the artifact
-version = libraryVersion
+tasks.whenTaskAdded { task ->
+    if (task.name == 'generateReleaseBuildConfig') {
+        task.dependsOn 'increaseVersionCode'
+    }
+}
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
