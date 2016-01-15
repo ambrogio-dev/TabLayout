@@ -4,7 +4,7 @@
     <application android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:versionCode="14"
+        android:versionCode="30"
 >
 
     </application>
