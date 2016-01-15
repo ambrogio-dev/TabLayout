@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.ambrogio.android:tablayout:0.1.1'
+    compile 'com.ambrogio.android:tablayout:0.2.1'
 }
 ```
 
